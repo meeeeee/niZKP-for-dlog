@@ -29,15 +29,12 @@ std::pair<ll,ll> dlogProof(ll x, ll g, uint32_t p){
     ll t = exp(g, a, p);
     ll c = splitmix64(g + exp(g, x, p) + t)%p;
     ll r = (a+((p-1)*(p-1) - c*x)%(p-1))%(p-1);// because fucky c++ modding
-    std::cout << "prover: " << c << " " << t << " r: " << r << std::endl;
     return {t, r};
 }
 
 // verification algorithm to test that dlogProof truly knows x given g^x, p
 bool verify(ll y, ll g, uint32_t p, std::pair<ll,ll> pf){
     ll c = splitmix64(g + y + (pf.first))%p;
-    std::cout << "verifier: " << c << " " << pf.first << " " << exp(y, c, p) << " " << exp(g, pf.second, p) << " " << y << std::endl;
-    std::cout << pf.first << " " << (exp(y, c, p)*exp(g, pf.second, p))%p << std::endl;
     return (pf.first) == (exp(y, c, p)*exp(g, pf.second, p))%p;
 }
 
@@ -49,8 +46,8 @@ bool rep(ll x, ll y, ll g, uint32_t p, int k){
 
 int main(){
     ll g, x, y;
-    std::cin >> g >> x;
+    uint16_t k;
+    std::cin >> g >> x >> k;
     y = exp(g, x, pp);
-    std::cout << "inputs: " << g << " " << x << " " << y << std::endl;
-    std::cout << rep(x, y, g, pp, 1) << std::endl;
+    std::cout << rep(x, y, g, pp, k) << std::endl;
 }
